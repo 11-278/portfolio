@@ -1,0 +1,1182 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Fiza Zohaib's web development and UI/UX portfolio projects.">
+<meta name="theme-color" content="#fcfaff">
+<title>Projects | Fiza Zohaib</title>
+<link rel="stylesheet" href="assets/style.css">
+
+<style>
+:root {
+  --purple: #8755b5;
+  --purple-dark: #674092;
+  --lavender: #f1e8ff;
+  --pink: #fff0f7;
+  --ink: #33283d;
+  --muted: #7d7287;
+  --line: #e9def2;
+  --white: #fff;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  color: var(--ink);
+  background: #fcfaff;
+}
+
+.projects-intro { max-width: 780px; }
+
+.project-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 24px;
+}
+
+.filter-btn {
+  border: 1px solid var(--line);
+  background: white;
+  color: var(--purple-dark);
+  border-radius: 30px;
+  padding: 9px 15px;
+  cursor: pointer;
+  font: inherit;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+  background: var(--purple);
+  color: white;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.card {
+  min-width: 0;
+  overflow: hidden;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: 0 8px 28px #6740920b;
+  transition: transform .2s, box-shadow .2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 34px #67409218;
+}
+
+.project-image {
+  height: 190px;
+  overflow: hidden;
+  background: var(--lavender);
+}
+
+.project-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .3s;
+}
+
+.card:hover .project-image img { transform: scale(1.04); }
+
+.card-body { padding: 20px; }
+
+.card-body h3 { margin: 12px 0; }
+
+.card-body p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.project-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 29px;
+  height: 25px;
+  margin-right: 5px;
+  background: var(--lavender);
+  color: var(--purple-dark);
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 14px;
+}
+
+.tag {
+  display: inline-block;
+  padding: 5px 9px;
+  border-radius: 20px;
+  background: var(--pink);
+  color: #875278;
+  font-size: 11px;
+}
+
+.project-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 18px;
+}
+
+.demo-btn, .secondary-btn, .small-btn {
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 13px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  text-decoration: none;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.demo-btn {
+  background: var(--purple);
+  color: white;
+}
+
+.demo-btn:hover { background: var(--purple-dark); }
+
+.secondary-btn, .small-btn {
+  background: var(--lavender);
+  color: var(--purple-dark);
+}
+
+.project-status {
+  font-size: 12px !important;
+  margin-top: 12px;
+}
+
+.project-note {
+  margin-top: 28px;
+  padding: 28px;
+  background: linear-gradient(120deg, #fff0f7, #f1e8ff);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+}
+
+/* Interactive preview window */
+.demo-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: #24152bbd;
+  padding: 16px;
+  overflow-y: auto;
+  align-items: center;
+  justify-content: center;
+}
+
+.demo-overlay.active { display: flex; }
+
+.demo-window {
+  background: #fcfaff;
+  width: min(760px, 100%);
+  max-height: 92vh;
+  overflow-y: auto;
+  border-radius: 22px;
+  border: 1px solid #eadcf7;
+  box-shadow: 0 25px 80px #0003;
+}
+
+.demo-header {
+  padding: 18px 22px;
+  background: linear-gradient(120deg, #fff0f7, #f0e6ff);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.demo-header h2 { margin: 3px 0; font-size: 21px; }
+
+.demo-close {
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 12px;
+  background: white;
+  color: var(--purple-dark);
+  cursor: pointer;
+  font-size: 19px;
+}
+
+.demo-content { padding: 22px; }
+
+.demo-subtitle {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.demo-panel {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  padding: 16px;
+  margin: 13px 0;
+}
+
+.demo-panel h3 { margin: 0 0 12px; font-size: 16px; }
+
+.demo-input, .demo-select, .demo-textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 11px 12px;
+  border: 1px solid #dfd2ec;
+  border-radius: 10px;
+  background: white;
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+  margin: 5px 0 10px;
+}
+
+.demo-textarea { min-height: 75px; resize: vertical; }
+
+.demo-label { display: block; font-size: 13px; font-weight: 600; }
+
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.demo-stat {
+  padding: 14px;
+  border-radius: 13px;
+  background: var(--lavender);
+}
+
+.demo-stat strong {
+  display: block;
+  font-size: 21px;
+  margin-top: 5px;
+}
+
+.demo-stat span { font-size: 12px; color: var(--muted); }
+
+.demo-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.demo-row {
+  padding: 12px;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.demo-row span { overflow-wrap: anywhere; }
+
+.demo-price { font-weight: bold; color: var(--purple-dark); }
+
+.demo-message {
+  min-height: 20px;
+  font-size: 13px;
+  color: var(--purple-dark);
+  margin-top: 10px;
+}
+
+.demo-pill {
+  display: inline-block;
+  border-radius: 20px;
+  background: var(--pink);
+  color: #965477;
+  padding: 5px 9px;
+  font-size: 11px;
+}
+
+.demo-empty { color: var(--muted); font-size: 13px; }
+
+@media (max-width: 900px) {
+  .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 560px) {
+  .cards { grid-template-columns: 1fr; }
+  .project-image { height: 210px; }
+  .demo-grid { grid-template-columns: 1fr 1fr; }
+  .demo-content { padding: 14px; }
+  .demo-header { padding: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="wrap nav">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">FZ</span>
+      <span>Fiza Zohaib</span>
+    </a>
+
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="skills.html">Skills</a>
+      <a href="projects.html" aria-current="page">Projects</a>
+      <a href="experience.html">Experience</a>
+      <a href="education.html">Education</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+
+    <a class="nav-cta" href="contact.html">Let's connect ↗</a>
+  </div>
+</header>
+
+<main>
+
+<section class="page-heading">
+  <div class="wrap projects-intro">
+    <span class="kicker">MY PORTFOLIO</span>
+    <h1>Projects built with creativity.</h1>
+    <p>
+      Explore web app previews and project interfaces focused on useful
+      workflows, thoughtful UI/UX, and responsive design.
+    </p>
+  </div>
+</section>
+
+<section class="content">
+<div class="wrap">
+
+  <div class="project-filters" aria-label="Filter projects">
+    <button class="filter-btn active" data-filter="all">All projects</button>
+    <button class="filter-btn" data-filter="business">Business</button>
+    <button class="filter-btn" data-filter="shopping">Shopping</button>
+    <button class="filter-btn" data-filter="productivity">Productivity</button>
+    <button class="filter-btn" data-filter="lifestyle">Lifestyle</button>
+  </div>
+
+  <div class="cards" id="project-cards">
+
+    <article class="card" data-category="shopping">
+      <div class="project-image">
+        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=900&q=85"
+             alt="Shopping checkout experience" loading="lazy">
+      </div>
+      <div class="card-body">
+        <span class="kicker"><span class="project-number">01</span> E-commerce</span>
+        <h3>ShopNest — Shopping App</h3>
+        <p>Explore products, filter categories, add items to a shopping cart, and try a sample checkout flow.</p>
+        <div class="tags">
+          <span class="tag">E-commerce</span><span class="tag">JavaScript</span>
+          <span class="tag">Responsive UI</span>
+        </div>
+        <div class="project-actions">
+          <button class="demo-btn" onclick="openDemo('shopnest')">✨ Live Demo ↗</button>
+        </div>
+        <p class="project-status">Interactive front-end preview · Sample products</p>
+      </div>
+    </article>
+
+    <article class="card" data-category="business">
+      <div class="project-image">
+        <img src="https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&w=900&q=85"
+             alt="Truck and logistics transport" loading="lazy">
+      </div>
+      <div class="card-body">
+        <span class="kicker"><span class="project-number">02</span> Logistics</span>
+        <h3>FleetDesk — Truck Dispatch</h3>
+        <p>Review sample loads, select a dispatch status, and assign drivers through an example logistics dashboard.</p>
+        <div class="tags">
+          <span class="tag">Fleet Management</span><span class="tag">Dispatch</span>
+          <span class="tag">Dashboard UI</span>
+        </div>
+        <div class="project-actions">
+          <button class="demo-btn" onclick="openDemo('fleetdesk')">🚚 Live Demo ↗</button>
+        </div>
+        <p class="project-status">Interactive front-end preview · Sample shipment data</p>
+      </div>
+    </article>
+
+    <article class="card" data-category="productivity">
+      <div class="project-image">
+        <img src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&w=900&q=85"
+             alt="Planning and productivity workspace" loading="lazy">
+      </div>
+      <div class="card-body">
+        <span class="kicker"><span class="project-number">03</span> Productivity</span>
+        <h3>TaskFlow — Task Manager</h3>
+        <p>Add tasks, mark them complete, and remove tasks from a simple task management preview.</p>
+        <div class="tags">
+          <span class="tag">Task Management</span><span class="tag">JavaScript</span>
+          <span class="tag">CRUD</span>
+        </div>
+        <div class="project-actions">
+          <button class="demo-btn" onclick="openDemo('taskflow')">📝 Live Demo ↗</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-category="business">
+      <div class="project-image">
+        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=85"
+             alt="Business analytics dashboard" loading="lazy">
+      </div>
+      <div class="card-body">
+        <span class="kicker"><span class="project-number">04</span> Business</span>
+        <h3>DevFlow CRM Dashboard</h3>
+        <p>Explore sample leads, review deal stages, and move an example opportunity through a sales pipeline.</p>
+        <div class="tags">
+          <span class="tag">CRM</span><span class="tag">Sales Pipeline</span>
+          <span class="tag">Dashboard</span>
+        </div>
+        <div class="project-actions">
+          <button class="demo-btn" onclick="openDemo('crm')">📊 Live Demo ↗</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-category="lifestyle">
+      <div class="project-image">
+        <img src="https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?auto=format&fit=crop&w=900&q=85"
+             alt="Weather and cloudy sky" loading="lazy">
+      </div>
+      <div class="card-body">
+        <span class="kicker"><span class="project-number">05</span> Weather</span>
+        <h3>WeatherNow</h3>
+        <p>Choose a sample city and explore a weather dashboard with illustrative conditions and forecast information.</p>
+        <div class="tags">
+          <span class="tag">Weather UI</span><span class="tag">Dashboard</span>
+          <span class="tag">JavaScript</span>
+        </div>
+        <div class="project-actions">
+          <button class="demo-btn" onclick="openDemo('weather')">☁️ Live Demo ↗</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-category="shopping">
+      <div class="project-image">
+        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=900&q=85"
+             alt="Restaurant dining" loading="lazy">
+      </div>
+      <div class="card-body">
+        <span class="kicker"><span class="project-number">06</span> Food</span>
+        <h3>FoodieHub — Food Ordering</h3>
+        <p>Browse a sample menu, add meals to your order, and calculate the total for a demo order.</p>
+        <div class="tags">
+          <span class="tag">Food App</span><span class="tag">Menu UI</span>
+          <span class="tag">Order Flow</span>
+        </div>
+        <div class="project-actions">
+          <button class="demo-btn" onclick="openDemo('foodie')">🍓 Live Demo ↗</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-category="business">
+      <div class="project-image">
+        <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=900&q=85"
+             alt="Personal finance and calculations" loading="lazy">
+      </div>
+      <div class="card-body">
+        <span class="kicker"><span class="project-number">07</span> Finance</span>
+        <h3>Expense Tracker</h3>
+        <p>Add sample income and expenses, then see how each entry affects your calculated balance.</p>
+        <div class="tags">
+          <span class="tag">Finance</span><span class="tag">Calculations</span>
+          <span class="tag">Dashboard</span>
+        </div>
+        <div class="project-actions">
+          <button class="demo-btn" onclick="openDemo('expense')">💜 Live Demo ↗</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-category="lifestyle">
+      <div class="project-image">
+        <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=900&q=85"
+             alt="Fitness training and workout" loading="lazy">
+      </div>
+      <div class="card-body">
+        <span class="kicker"><span class="project-number">08</span> Fitness</span>
+        <h3>FitTrack — Fitness App</h3>
+        <p>Choose a workout, log a completed session, and track progress in a small interactive preview.</p>
+        <div class="tags">
+          <span class="tag">Fitness UI</span><span class="tag">Progress</span>
+          <span class="tag">Activity Tracking</span>
+        </div>
+        <div class="project-actions">
+          <button class="demo-btn" onclick="openDemo('fittrack')">🏃 Live Demo ↗</button>
+        </div>
+      </div>
+    </article>
+
+  </div>
+
+  <div class="project-note">
+    <h2>Have a project in mind? 💌</h2>
+    <p>I'm interested in frontend development, modern web applications, and thoughtful UI/UX design.</p>
+    <a class="demo-btn" href="contact.html">Contact Me ↗</a>
+  </div>
+
+</div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <div>
+      <strong>Fiza Zohaib</strong>
+      <p>Frontend Development · UI/UX · Full-stack Learning</p>
+    </div>
+    <div class="footer-links">
+      <a href="projects.html">Projects</a>
+      <a href="experience.html">Experience</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <p>© <span data-year></span> Fiza Zohaib</p>
+  </div>
+</footer>
+
+<!-- Shared demo window -->
+<div class="demo-overlay" id="demo-overlay"
+     role="dialog" aria-modal="true" aria-labelledby="demo-title"
+     onclick="if(event.target===this) closeDemo()">
+  <div class="demo-window">
+    <div class="demo-header">
+      <div>
+        <span class="kicker">INTERACTIVE PREVIEW</span>
+        <h2 id="demo-title">Project Demo</h2>
+      </div>
+      <button class="demo-close" onclick="closeDemo()" aria-label="Close demo">✕</button>
+    </div>
+    <div class="demo-content" id="demo-content"></div>
+  </div>
+</div>
+
+<script src="assets/script.js"></script>
+
+<script>
+/* Update the footer year */
+document.querySelectorAll('[data-year]').forEach(el => {
+  el.textContent = new Date().getFullYear();
+});
+
+/* Project category filters */
+document.querySelectorAll('.filter-btn').forEach(button => {
+  button.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+    button.classList.add('active');
+
+    const filter = button.dataset.filter;
+
+    document.querySelectorAll('#project-cards .card').forEach(card => {
+      card.hidden = filter !== 'all' && card.dataset.category !== filter;
+    });
+  });
+});
+
+const overlay = document.getElementById('demo-overlay');
+const demoContent = document.getElementById('demo-content');
+const demoTitle = document.getElementById('demo-title');
+
+let shopCart = [];
+let foodCart = [];
+let tasks = [
+  { text: 'Review weekly goals', done: false },
+  { text: 'Plan tomorrow', done: true }
+];
+let loads = [
+  { id: 'FD-1024', origin: 'Lahore', destination: 'Islamabad', driver: 'Ali', status: 'Assigned' },
+  { id: 'FD-1025', origin: 'Karachi', destination: 'Lahore', driver: 'Sara', status: 'In Transit' },
+  { id: 'FD-1026', origin: 'Faisalabad', destination: 'Multan', driver: 'Unassigned', status: 'Pending' }
+];
+let deals = [
+  { name: 'Website Redesign', amount: 85000, stage: 'Proposal' },
+  { name: 'Mobile App Project', amount: 120000, stage: 'Qualified' },
+  { name: 'Dashboard Design', amount: 45000, stage: 'New Lead' }
+];
+let expenses = [
+  { name: 'Groceries', amount: 2500, type: 'Expense' },
+  { name: 'Freelance Work', amount: 12000, type: 'Income' }
+];
+let workouts = [];
+
+const products = [
+  { id: 1, name: 'Lavender Tote Bag', category: 'Accessories', price: 1500, emoji: '👜' },
+  { id: 2, name: 'Pastel Notebook', category: 'Stationery', price: 650, emoji: '📓' },
+  { id: 3, name: 'Desk Organizer', category: 'Home', price: 1200, emoji: '🌷' },
+  { id: 4, name: 'Minimal Wallet', category: 'Accessories', price: 950, emoji: '👛' }
+];
+
+const meals = [
+  { id: 1, name: 'Creamy Pasta', price: 850, emoji: '🍝' },
+  { id: 2, name: 'Classic Burger', price: 650, emoji: '🍔' },
+  { id: 3, name: 'Fresh Salad', price: 450, emoji: '🥗' },
+  { id: 4, name: 'Strawberry Shake', price: 350, emoji: '🍓' }
+];
+
+const money = value => 'Rs. ' + Number(value).toLocaleString('en-PK');
+
+function safe(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  })[char]);
+}
+
+function openDemo(project) {
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+
+  const renderers = {
+    shopnest: renderShopNest,
+    fleetdesk: renderFleetDesk,
+    taskflow: renderTaskFlow,
+    crm: renderCRM,
+    weather: renderWeather,
+    foodie: renderFoodie,
+    expense: renderExpense,
+    fittrack: renderFitTrack
+  };
+
+  if (renderers[project]) renderers[project]();
+}
+
+function closeDemo() {
+  overlay.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') closeDemo();
+});
+
+function setDemo(title, html) {
+  demoTitle.textContent = title;
+  demoContent.innerHTML = html;
+}
+
+function renderShopNest() {
+  setDemo('🛍️ ShopNest — Shopping Demo', `
+    <p class="demo-subtitle">Browse sample products and try the cart. This demo does not process payments.</p>
+    <div class="demo-panel">
+      <label class="demo-label" for="shop-filter">Filter by category</label>
+      <select class="demo-select" id="shop-filter" onchange="renderProducts(this.value)">
+        <option value="All">All categories</option>
+        <option>Accessories</option><option>Stationery</option><option>Home</option>
+      </select>
+      <div class="demo-grid" id="product-list"></div>
+    </div>
+    <div class="demo-panel">
+      <h3>🛒 Your Cart <span id="shop-cart-count"></span></h3>
+      <div id="shop-cart-list"></div>
+      <p><strong>Total: <span id="shop-cart-total">Rs. 0</span></strong></p>
+      <button class="demo-btn" onclick="shopCheckout()">Continue to Demo Checkout ↗</button>
+      <p class="demo-message" id="shop-message"></p>
+    </div>
+  `);
+  renderProducts('All');
+  renderShopCart();
+}
+
+function renderProducts(category) {
+  const list = document.getElementById('product-list');
+  if (!list) return;
+
+  const filtered = category === 'All' ? products : products.filter(p => p.category === category);
+
+  list.innerHTML = filtered.map(p => `
+    <div class="demo-panel">
+      <div style="font-size:30px">${p.emoji}</div>
+      <strong>${safe(p.name)}</strong>
+      <p class="demo-price">${money(p.price)}</p>
+      <button class="small-btn" onclick="addShopItem(${p.id})">Add to cart +</button>
+    </div>
+  `).join('');
+}
+
+function addShopItem(id) {
+  shopCart.push(products.find(p => p.id === id));
+  renderShopCart();
+}
+
+function renderShopCart() {
+  const list = document.getElementById('shop-cart-list');
+  if (!list) return;
+
+  document.getElementById('shop-cart-count').textContent = `(${shopCart.length} items)`;
+  document.getElementById('shop-cart-total').textContent =
+    money(shopCart.reduce((sum, item) => sum + item.price, 0));
+
+  list.innerHTML = shopCart.length
+    ? shopCart.map((item, index) => `
+        <div class="demo-row">
+          <span>${safe(item.emoji + ' ' + item.name)}</span>
+          <span>${money(item.price)}
+            <button class="small-btn" onclick="removeShopItem(${index})">Remove</button>
+          </span>
+        </div>`).join('')
+    : '<p class="demo-empty">Your cart is empty. Add something lovely!</p>';
+}
+
+function removeShopItem(index) {
+  shopCart.splice(index, 1);
+  renderShopCart();
+}
+
+function shopCheckout() {
+  const message = document.getElementById('shop-message');
+  message.textContent = shopCart.length
+    ? '✨ Demo checkout ready! No order or payment has been submitted.'
+    : 'Please add a product to your cart first.';
+}
+
+/* FleetDesk demo */
+function renderFleetDesk() {
+  setDemo('🚚 FleetDesk — Dispatch Dashboard', `
+    <p class="demo-subtitle">Example logistics data. Changes exist in this page session only.</p>
+    <div class="demo-grid">
+      <div class="demo-stat"><span>Total Loads</span><strong>${loads.length}</strong></div>
+      <div class="demo-stat"><span>In Transit</span><strong>${loads.filter(l => l.status === 'In Transit').length}</strong></div>
+      <div class="demo-stat"><span>Assigned</span><strong>${loads.filter(l => l.status === 'Assigned').length}</strong></div>
+      <div class="demo-stat"><span>Pending</span><strong>${loads.filter(l => l.status === 'Pending').length}</div>
+    </div>
+    <div class="demo-panel">
+      <h3>Shipment Board</h3>
+      <div id="fleet-loads" class="demo-list"></div>
+    </div>
+    <div class="demo-panel">
+      <h3>Add a sample load</h3>
+      <label class="demo-label">Origin</label>
+      <input class="demo-input" id="fleet-origin" placeholder="e.g. Lahore">
+      <label class="demo-label">Destination</label>
+      <input class="demo-input" id="fleet-destination" placeholder="e.g. Islamabad">
+      <button class="demo-btn" onclick="addLoad()">+ Add Load</button>
+      <p id="fleet-message" class="demo-message"></p>
+    </div>
+  `);
+  renderLoads();
+}
+
+function renderLoads() {
+  const target = document.getElementById('fleet-loads');
+  if (!target) return;
+
+  target.innerHTML = loads.map((load, index) => `
+    <div class="demo-panel">
+      <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap">
+        <strong>${safe(load.id)}</strong>
+        <span class="demo-pill">${safe(load.status)}</span>
+      </div>
+      <p>${safe(load.origin)} → ${safe(load.destination)}</p>
+      <p class="demo-subtitle">Driver: ${safe(load.driver)}</p>
+      <label class="demo-label">Update status</label>
+      <select class="demo-select" onchange="changeLoadStatus(${index},this.value)">
+        ${['Pending','Assigned','In Transit','Delivered'].map(s =>
+          `<option ${load.status === s ? 'selected' : ''}>${s}</option>`).join('')}
+      </select>
+      <label class="demo-label">Assign driver</label>
+      <select class="demo-select" onchange="changeDriver(${index},this.value)">
+        ${['Unassigned','Ali','Sara','Ahmed','Ayesha'].map(d =>
+          `<option ${load.driver === d ? 'selected' : ''}>${d}</option>`).join('')}
+      </select>
+    </div>
+  `).join('');
+}
+
+function changeLoadStatus(index, status) {
+  loads[index].status = status;
+  renderFleetDesk();
+}
+
+function changeDriver(index, driver) {
+  loads[index].driver = driver;
+  renderFleetDesk();
+}
+
+function addLoad() {
+  const origin = document.getElementById('fleet-origin').value.trim();
+  const destination = document.getElementById('fleet-destination').value.trim();
+  if (!origin || !destination) {
+    document.getElementById('fleet-message').textContent = 'Enter both locations.';
+    return;
+  }
+
+  loads.push({
+    id: 'FD-' + (1024 + loads.length),
+    origin, destination, driver: 'Unassigned', status: 'Pending'
+  });
+  renderFleetDesk();
+}
+
+/* TaskFlow demo */
+function renderTaskFlow() {
+  setDemo('📝 TaskFlow — Task Manager', `
+    <p class="demo-subtitle">Create and manage tasks in this interactive preview.</p>
+    <div class="demo-panel">
+      <label class="demo-label" for="task-input">New task</label>
+      <input class="demo-input" id="task-input" placeholder="What do you need to do?"
+        onkeydown="if(event.key==='Enter')addTask()">
+      <button class="demo-btn" onclick="addTask()">Add Task +</button>
+      <div class="demo-grid" style="margin-top:15px">
+        <div class="demo-stat"><span>Total Tasks</span><strong>${tasks.length}</strong></div>
+        <div class="demo-stat"><span>Completed</span><strong>${tasks.filter(t=>t.done).length}</strong></div>
+      </div>
+      <div class="demo-list" id="task-list"></div>
+    </div>
+  `);
+  renderTasks();
+}
+
+function renderTasks() {
+  const target = document.getElementById('task-list');
+  if (!target) return;
+
+  target.innerHTML = tasks.length ? tasks.map((task, index) => `
+    <div class="demo-row">
+      <span style="${task.done ? 'text-decoration:line-through;opacity:.6' : ''}">
+        ${safe(task.text)}
+      </span>
+      <span>
+        <button class="small-btn" onclick="toggleTask(${index})">${task.done ? 'Undo' : 'Done ✓'}</button>
+        <button class="small-btn" onclick="deleteTask(${index})">✕</button>
+      </span>
+    </div>
+  `).join('') : '<p class="demo-empty">No tasks yet. Add your first task!</p>';
+}
+
+function addTask() {
+  const input = document.getElementById('task-input');
+  const text = input.value.trim();
+  if (!text) return;
+  tasks.push({ text, done: false });
+  renderTaskFlow();
+}
+
+function toggleTask(index) {
+  tasks[index].done = !tasks[index].done;
+  renderTaskFlow();
+}
+
+function deleteTask(index) {
+  tasks.splice(index, 1);
+  renderTaskFlow();
+}
+
+/* CRM demo */
+function renderCRM() {
+  setDemo('📊 DevFlow CRM — Sales Pipeline', `
+    <p class="demo-subtitle">Sample opportunities for exploring a CRM pipeline.</p>
+    <div class="demo-grid">
+      <div class="demo-stat"><span>Total Deals</span><strong>${deals.length}</strong></div>
+      <div class="demo-stat"><span>Pipeline Value</span><strong>${money(deals.reduce((s,d)=>s+d.amount,0))}</strong></div>
+    </div>
+    <div class="demo-panel">
+      <h3>Opportunities</h3>
+      <div id="crm-deals" class="demo-list"></div>
+    </div>
+    <div class="demo-panel">
+      <h3>Add opportunity</h3>
+      <label class="demo-label">Deal name</label>
+      <input class="demo-input" id="crm-name" placeholder="e.g. Website project">
+      <label class="demo-label">Value (PKR)</label>
+      <input class="demo-input" id="crm-value" type="number" min="0" placeholder="50000">
+      <button class="demo-btn" onclick="addDeal()">Add Deal +</button>
+      <p class="demo-message" id="crm-message"></p>
+    </div>
+  `);
+  renderDeals();
+}
+
+function renderDeals() {
+  const target = document.getElementById('crm-deals');
+  if (!target) return;
+
+  target.innerHTML = deals.map((deal, index) => `
+    <div class="demo-panel">
+      <strong>${safe(deal.name)}</strong>
+      <p class="demo-price">${money(deal.amount)}</p>
+      <label class="demo-label">Pipeline stage</label>
+      <select class="demo-select" onchange="changeDealStage(${index},this.value)">
+        ${['New Lead','Qualified','Proposal','Negotiation','Won','Lost'].map(s =>
+          `<option ${deal.stage===s?'selected':''}>${s}</option>`).join('')}
+      </select>
+    </div>
+  `).join('');
+}
+
+function changeDealStage(index, stage) {
+  deals[index].stage = stage;
+  renderCRM();
+}
+
+function addDeal() {
+  const name = document.getElementById('crm-name').value.trim();
+  const amount = Number(document.getElementById('crm-value').value);
+
+  if (!name || !Number.isFinite(amount) || amount < 0) {
+    document.getElementById('crm-message').textContent = 'Enter a deal name and a valid amount.';
+    return;
+  }
+
+  deals.push({ name, amount, stage: 'New Lead' });
+  renderCRM();
+}
+
+/* WeatherNow demo — illustrative data, not live weather */
+function renderWeather() {
+  const weather = {
+    Lahore: { temp: 29, condition: 'Partly Cloudy', humidity: '54%', wind: '12 km/h', icon: '🌤️' },
+    Islamabad: { temp: 25, condition: 'Cloudy', humidity: '62%', wind: '9 km/h', icon: '☁️' },
+    Karachi: { temp: 31, condition: 'Sunny', humidity: '68%', wind: '16 km/h', icon: '☀️' },
+    Narowal: { temp: 27, condition: 'Clear', humidity: '51%', wind: '10 km/h', icon: '🌞' }
+  };
+
+  setDemo('☁️ WeatherNow — Weather Dashboard', `
+    <p class="demo-subtitle">Illustrative sample conditions only. This preview does not fetch live weather data.</p>
+    <div class="demo-panel">
+      <label class="demo-label" for="weather-city">Choose city</label>
+      <select class="demo-select" id="weather-city" onchange="updateWeather(this.value)">
+        ${Object.keys(weather).map(city=>`<option>${city}</option>`).join('')}
+      </select>
+      <div id="weather-result"></div>
+    </div>
+    <div class="demo-panel">
+      <h3>Simple forecast illustration</h3>
+      <div class="demo-grid">
+        <div class="demo-stat"><span>Today</span><strong>☀️ 29°</strong></div>
+        <div class="demo-stat"><span>Tomorrow</span><strong>🌤️ 27°</strong></div>
+        <div class="demo-stat"><span>Friday</span><strong>☁️ 25°</strong></div>
+        <div class="demo-stat"><span>Saturday</span><strong>🌦️ 26°</strong></div>
+      </div>
+    </div>
+  `);
+
+  window.demoWeatherData = weather;
+  updateWeather('Lahore');
+}
+
+function updateWeather(city) {
+  const w = window.demoWeatherData[city];
+  document.getElementById('weather-result').innerHTML = `
+    <div style="text-align:center;padding:24px 8px">
+      <div style="font-size:55px">${w.icon}</div>
+      <h2 style="font-size:38px;margin:5px">${w.temp}°C</h2>
+      <h3>${safe(city)}</h3>
+      <p>${safe(w.condition)}</p>
+    </div>
+    <div class="demo-grid">
+      <div class="demo-stat"><span>Humidity</span><strong>${w.humidity}</strong></div>
+      <div class="demo-stat"><span>Wind</span><strong>${w.wind}</strong></div>
+    </div>`;
+}
+
+/* FoodieHub demo */
+function renderFoodie() {
+  setDemo('🍓 FoodieHub — Food Ordering', `
+    <p class="demo-subtitle">Explore a sample menu and prepare a demo order. No real order is submitted.</p>
+    <div class="demo-grid">
+      ${meals.map(meal=>`
+        <div class="demo-panel">
+          <div style="font-size:32px">${meal.emoji}</div>
+          <h3>${safe(meal.name)}</h3>
+          <p class="demo-price">${money(meal.price)}</p>
+          <button class="small-btn" onclick="addFood(${meal.id})">Add to order +</button>
+        </div>`).join('')}
+    </div>
+    <div class="demo-panel">
+      <h3>Your order 🛍️</h3>
+      <div id="food-list"></div>
+      <p><strong>Total: <span id="food-total">Rs. 0</span></strong></p>
+      <button class="demo-btn" onclick="placeFoodOrder()">Prepare Demo Order</button>
+      <p class="demo-message" id="food-message"></p>
+    </div>
+  `);
+  renderFoodCart();
+}
+
+function addFood(id) {
+  foodCart.push(meals.find(meal=>meal.id===id));
+  renderFoodCart();
+}
+
+function renderFoodCart() {
+  const target = document.getElementById('food-list');
+  if (!target) return;
+
+  target.innerHTML = foodCart.length
+    ? foodCart.map((meal,index)=>`
+        <div class="demo-row">
+          <span>${meal.emoji} ${safe(meal.name)}</span>
+          <span>${money(meal.price)}
+            <button class="small-btn" onclick="removeFood(${index})">✕</button>
+          </span>
+        </div>`).join('')
+    : '<p class="demo-empty">Your order is empty.</p>';
+
+  document.getElementById('food-total').textContent =
+    money(foodCart.reduce((sum,meal)=>sum+meal.price,0));
+}
+
+function removeFood(index) {
+  foodCart.splice(index,1);
+  renderFoodCart();
+}
+
+function placeFoodOrder() {
+  document.getElementById('food-message').textContent = foodCart.length
+    ? 'Your demo order is ready! No restaurant has received this order.'
+    : 'Add a meal before preparing your demo order.';
+}
+
+/* Expense Tracker demo */
+function renderExpense() {
+  const income = expenses.filter(e=>e.type==='Income').reduce((s,e)=>s+e.amount,0);
+  const spending = expenses.filter(e=>e.type==='Expense').reduce((s,e)=>s+e.amount,0);
+
+  setDemo('💜 Expense Tracker — Finance', `
+    <p class="demo-subtitle">Track sample transactions and see the balance update. Values are not connected to a bank.</p>
+    <div class="demo-grid">
+      <div class="demo-stat"><span>Total Income</span><strong>${money(income)}</strong></div>
+      <div class="demo-stat"><span>Total Expenses</span><strong>${money(spending)}</strong></div>
+      <div class="demo-stat" style="grid-column:1/-1"><span>Current Balance</span><strong>${money(income-spending)}</strong></div>
+    </div>
+    <div class="demo-panel">
+      <h3>Add transaction</h3>
+      <label class="demo-label">Description</label>
+      <input class="demo-input" id="expense-name" placeholder="e.g. Transport">
+      <label class="demo-label">Amount (PKR)</label>
+      <input class="demo-input" id="expense-amount" type="number" min="1" placeholder="1000">
+      <label class="demo-label">Type</label>
+      <select class="demo-select" id="expense-type"><option>Expense</option><option>Income</option></select>
+      <button class="demo-btn" onclick="addExpense()">Add Transaction +</button>
+      <p class="demo-message" id="expense-message"></p>
+    </div>
+    <div class="demo-panel">
+      <h3>Transactions</h3>
+      <div id="expense-list"></div>
+    </div>
+  `);
+  renderExpenseList();
+}
+
+function renderExpenseList() {
+  const target = document.getElementById('expense-list');
+  if (!target) return;
+
+  target.innerHTML = expenses.map((item,index)=>`
+    <div class="demo-row">
+      <span>${safe(item.name)}<br><small>${item.type}</small></span>
+      <span class="demo-price">${item.type==='Expense'?'-':'+'}${money(item.amount)}
+        <button class="small-btn" onclick="deleteExpense(${index})">✕</button>
+      </span>
+    </div>`).join('');
+}
+
+function addExpense() {
+  const name = document.getElementById('expense-name').value.trim();
+  const amount = Number(document.getElementById('expense-amount').value);
+  const type = document.getElementById('expense-type').value;
+
+  if (!name || !Number.isFinite(amount) || amount <= 0) {
+    document.getElementById('expense-message').textContent = 'Enter a description and a positive amount.';
+    return;
+  }
+
+  expenses.push({name, amount, type});
+  renderExpense();
+}
+
+function deleteExpense(index) {
+  expenses.splice(index,1);
+  renderExpense();
+}
+
+/* FitTrack demo */
+function renderFitTrack() {
+  const catalogue = [
+    {name:'Morning Walk', duration:20, emoji:'🚶'},
+    {name:'Full Body Workout', duration:35, emoji:'🏋️'},
+    {name:'Yoga & Stretching', duration:15, emoji:'🧘'},
+    {name:'Cycling Session', duration:30, emoji:'🚴'}
+  ];
+
+  setDemo('🏃 FitTrack — Fitness Tracker', `
+    <p class="demo-subtitle">Log sample workouts and view your session count and minutes.</p>
+    <div class="demo-grid">
+      <div class="demo-stat"><span>Sessions Logged</span><strong>${workouts.length}</strong></div>
+      <div class="demo-stat"><span>Total Minutes</span><strong>${workouts.reduce((s,w)=>s+w.duration,0)}</strong></div>
+    </div>
+    <div class="demo-panel">
+      <h3>Choose a workout</h3>
+      ${catalogue.map((w,index)=>`
+        <div class="demo-row">
+          <span>${w.emoji} ${w.name}<br><small>${w.duration} minutes</small></span>
+          <button class="small-btn" onclick="logWorkout(${index})">Log ✓</button>
+        </div>`).join('')}
+    </div>
+    <div class="demo-panel">
+      <h3>Recent activity</h3>
+      <div id="workout-list"></div>
+    </div>
+  `);
+  window.fitCatalogue = catalogue;
+  renderWorkoutList();
+}
+
+function logWorkout(index) {
+  workouts.push(window.fitCatalogue[index]);
+  renderFitTrack();
+}
+
+function renderWorkoutList() {
+  const target = document.getElementById('workout-list');
+  if (!target) return;
+
+  target.innerHTML = workouts.length
+    ? workouts.slice().reverse().map(w=>`
+        <div class="demo-row">
+          <span>${w.emoji} ${safe(w.name)}</span>
+          <strong>${w.duration} min</strong>
+        </div>`).join('')
+    : '<p class="demo-empty">No workouts logged yet. Choose one above!</p>';
+}
+</script>
+
+</body>
+</html>
+```
